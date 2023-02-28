@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap">
     <title>Document</title>
     <style>
         body{
@@ -12,7 +12,7 @@
         }
         .tr-head{background: #dff0d8 ;}
     </style>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.main.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-responsive.min.css">
 </head>
 <body>
     <div class="navbar navbar navbar-inverse navbar-fixed-top">
@@ -21,7 +21,7 @@
                 <a class="brand" href="">
                     UTL-IDGS
                 </a>
-                <ul>
+                <ul class="nav">
                     <li>
                         <a href="">
                             <i class="icon-home icon-white"></i>
@@ -50,20 +50,22 @@
         </div>
     </div>
     <div class="container">
-        {%with message=get_flash_messages()%}
-
-            {%if messages%}
+       
+        {%with messages=get_flashed_messages()%}
+        {%if messages%}
             {%for message in messages%}
-                <div class=" alert alert-success">
-                    {{message}}
-                </div>
+                <div class="alert alert-success">
+                     {{message}}
+                 </div>
             {%endfor%}
-            {%endif%}
+        {%endif%}
+        
         {%endwith%}
-        {% block content %}
 
-        {%endblock%}
-    </div>
+    {%block content%}
+    {%endblock%}
+</div>
+</div>
     
 </body>
 </html>

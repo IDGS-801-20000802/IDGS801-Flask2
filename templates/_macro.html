@@ -10,7 +10,7 @@
 
 {%endmacro%}
 
-{% macro render_firld(field) %}
+{% macro render_field(field) %}
 
     <div class="control-group">
         <div class="controls">
@@ -18,12 +18,13 @@
             {{field(**kwargs)|safe}}
         </div>
     </div>
-    {%if filed.errors%}
+    {%if field.errors%}
     <ul>
-        %for error in field.errors%
+        {%for error in field.errors%}
         <li style="color: red;">
             {{error}}
         </li>
         {%endfor%}
     </ul>
+    {%endif%}
 {%endmacro%}

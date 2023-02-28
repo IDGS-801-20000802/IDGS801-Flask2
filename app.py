@@ -19,15 +19,57 @@ csrf=CSRFProtect()
 def calcular():
     return render_template("calcular.html")
 
-@app.route("/traducir", methods=["GET", "POST"])
-def traducir():
-    return render_template("traductor.html")
+@app.route("/Traductor",methods=["GET","POST"])
+def traductor():
+    alum_form=forms.UserForm2(request.form)
+    idiom_form=forms.idiomas(request.form)
+    btn = request.form.get("Guardar")
+    btn2= request.form.get("Buscar")
+    if request.method=="POST" and 'Guardar' in request.form :
+        if alum_form.validate():
+            
+            if btn=='Guardar':
+                ing = request.form['ingles']
+                esp = request.form['espanol']
+                g=open('diccionario.txt', 'a')
+                g.write(ing.lower() + ' ' + esp.lower() + '\n')
+            
+                return render_template("traductor.html",form=alum_form,form1=idiom_form)
+    if request.method=="POST" and 'Buscar' in request.form:
+        if idiom_form.validate():
+            
+            ingles=None
+            espanol=None
+            if btn2=='Buscar':
+                idi=idiom_form.idioma.data
+                lenguage=idiom_form.lenguage.data.lower()
+                f=open('diccionario.txt','r')
+                lineas=f.readlines()
+                mensaje=''
+                for linea in lineas:
+                    ingles, espanol = linea.strip().lower().split(' ') 
+                
+                    if idi=='es':
+                        if lenguage==ingles:
+                            mensaje = f'la traduccion de "{ingles.upper()}" es "{espanol.upper()}".'
+                            break 
+                    elif idi=='in':
+                        if lenguage==espanol:
+                            mensaje = f'la traduccion de "{espanol.upper()}" es "{ingles.upper()}".'
+                            break
+                if not mensaje:
+                    mensaje="No existe la palabra en el Diccionario"
+                    f.close()
+                return render_template("traductor.html",form=alum_form, form1=idiom_form, mensaje=mensaje)
+                
+    return render_template("traductor.html",form=alum_form ,form1=idiom_form)
 
-@app.route("/cookie", methods=["GET", "POST"])
+@app.route("/cookie", methods=['GET','POST'])
 def cookie():
     reg_user=forms.LoginForm(request.form)
-   
-    if request.method=='POST' and reg_user.validate():
+
+    response=make_response(render_template('cookie.html', form=reg_user))
+    if request.method == 'POST' and reg_user.validate():
         user=reg_user.username.data
         pasw=reg_user.password.data
         datos=user+"@"+pasw
@@ -35,7 +77,7 @@ def cookie():
         response.set_cookie('datos_user', datos)
         flash(success_message)
     response=make_response(render_template('cookie.html', form=reg_user))
-        #print(user+' '+pasw)
+        #print(user + ' '+ pasw)
     return response
 
 @app.route("/Alumnos",methods=['GET','POST'])
@@ -46,8 +88,6 @@ def alumnos():
     if request.method == 'POST' and reg_alum.validate():
         mat=reg_alum.matricula.data
         nom=reg_alum.nombre.data
-        
-    
     return render_template ('Alumnos.html', form=reg_alum,mat=mat,nom=nom)
 
 @app.route("/CajasDi", methods=['GET','POST'])
@@ -85,6 +125,28 @@ def CajasDi():
     return render_template('CajasDinamicas.html', form=reg_caja)
 
 if __name__=="__main__":
-    csrf.init_app(app)
+    #srf.init_app(app)
     app.run(debug=True,port=3000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

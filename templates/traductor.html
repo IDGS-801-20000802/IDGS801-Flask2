@@ -1,22 +1,40 @@
 {% extends "layout.html"%}
 
 {%block content%}
-    <div class="col-xs-6">
-       {% from "_macros.html" import render_field %}
-    <form action="" method="post" novalidate>
-        {{form.csrf_token}}
-        <input type="hidden" name="csrf_token" value="{{csrf_token()}}"
+                 
+        <div class="col-xs-6">
+            {%from "_macro.html" import render_field%}
+            
+            <form action=" " method="POST" novalidate>
+                <h1>Diccionario</h1>
+            <div class="from-group">
+                {{render_field(form.ingles)}}
+                {{render_field(form.espanol)}}
+                <input type="submit" name="Guardar" value="Guardar">
+            </div>
+        </form>
+    </div>
    
-       <div class="row control-group">
-       
-        {{render_field(form.Pingles)}}
-        {{render_field(form.PEspañol)}}
-        <input type="submit" value="Registrar">
-       </div>
-    </form>
-    </div>
-    <div class="col-md-6">
 
-    </div>
 
+    <div class="col-xs-6">
+            <h1>Buscar</h1>
+            {%from "_macro.html" import render_field%}
+            <form action=" " method="POST" novalidate>
+            <div class="from-group col-xs-6">
+                {% for subfield in form1.idioma %}
+                    {{ subfield() }} {{ subfield.label }}<br>
+                {% endfor %}
+                <div class="input-field" style="display: inline-block;">
+                    {{render_field(form1.lenguage)}} = {{mensaje}}
+                </div>
+                <br>
+                <input type="submit" name="Buscar" value="Buscar">
+            </div>
+        </form>
+        </div>
+
+            
+        
+        
 {%endblock%}
